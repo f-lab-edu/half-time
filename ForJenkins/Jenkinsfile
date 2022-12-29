@@ -43,18 +43,35 @@ pipeline {
             }
         }
 
-        stage('SSH Conn') {
-            steps {
-                def remote = [:]
-                            remote.name = 'half-time'
-                            remote.host = '106.10.38.91'
-                            remote.user = 'root'
-                            remote.allowAnyHosts = true
-                            stage('Remote SSH') {
-                              writeFile file: 'run.sh', text: 'java -jar /home/web-app/*.jar'
-                              sshScript remote: remote, script: "run.sh"
-                            }
-            }
-        }
+       node {
+           withCredentials([sshUserPrivateKey(credentialsId: 'Dev_server', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+               def remote = [:]
+               remote.name = "Dev_server"
+               remote.host = "106.10.38.91"
+               remote.allowAnyHosts = true
+               remote.user = userName
+               remote.identityFile = identity
+
+               stage("Deploy") {
+                   sshPut remote: remote, from: './build/libs/*SNAPSHOT.jar', into: '/home/web-app/'
+               }
+               stage("Restart") {
+                   writeFile file: 'run.sh', text: '
+                   echo "> spring boot pid 확인"
+                           CURRENT_PID=$(ps -ef | grep half-time)echo "$CURRENT_PID"
+                           if [ -z ${CURRENT_PID} ] ;then
+                           echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다."
+                           else
+                           echo "> sudo kill -9 $CURRENT_PID"
+                           sudo kill -9 $CURRENT_PID
+                           sleep 10
+                           fi
+                           echo "> half-time 배포"
+                           sudo java -jar /home/web-app/*.jar
+                   '
+                   sshScript remote: remote, script: "run.sh"
+               }
+           }
+       }
     }
 }
