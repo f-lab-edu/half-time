@@ -1,0 +1,58 @@
+pipeline {
+  agent {
+    node {
+      label 'master'
+    }
+  }
+  stages {
+        stage('Git Progress') {
+             steps {
+                    git branch: 'main',
+                        url: 'https://github.com/f-lab-edu/half-time.git'
+                }
+
+             post {
+                    success {
+                                sh 'echo "Successfully Cloned Repository"'
+                             }
+                    failure {
+                                sh 'echo "Fail Cloned Repository"'
+                             }
+                  }
+        }
+
+        stage('Build'){
+            steps {
+            // gradlew 있어야 함. git clone해서 프로젝트 가져옴
+            sh 'chmod +x gradlew'
+            sh './gradlew clean build'
+
+            sh 'ls -al ./build/libs/ls -al ./build/libs/*SNAPSHOT.jar'
+            }
+
+            post {
+                success {
+                    echo 'gradle build success'
+                }
+
+                failure {
+                    echo 'gradle build failed'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo '테스트 관련된 몇 가지 단계를 수행한다.'
+            }
+        }
+
+        stage('Deploy'){
+            steps {
+            }
+        }
+
+
+
+    }
+}
