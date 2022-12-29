@@ -45,13 +45,13 @@ pipeline {
 
             stage('login ssh'){
                 steps{
-                    sshagent(credentials:['Login_Cloud_Server']){
+                    sshagent(credentials:['Dev_server']){
                                    sh 'ssh  -o StrictHostKeyChecking=no  root@106.10.38.91:2222 uptime "whoami"'
                               }
-                            echo "success lgoin"
-                             }
-                }
+                    echo "success lgoin"
+                    }
             }
+
 
             stage("Restart") {
                        writeFile file: 'run.sh', text: '''
@@ -69,6 +69,5 @@ pipeline {
                        '''
                        sshScript remote: remote, script: "run.sh"
             }
-        }
     }
 }
