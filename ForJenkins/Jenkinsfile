@@ -43,13 +43,18 @@ pipeline {
             }
         }
 
-        stage('Deploy'){
+        stage('SSH Conn') {
             steps {
-                echo 'jar 배포 테스트'
+                def remote = [:]
+                            remote.name = 'half-time'
+                            remote.host = '106.10.38.91'
+                            remote.user = 'root'
+                            remote.allowAnyHosts = true
+                            stage('Remote SSH') {
+                              writeFile file: 'run.sh', text: 'java -jar /home/web-app/*.jar'
+                              sshScript remote: remote, script: "run.sh"
+                            }
             }
         }
-
-
-
     }
 }
