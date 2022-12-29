@@ -71,8 +71,5 @@ pipeline {
                            sudo java -jar /home/web-app/*.jar >> app.log &
                    '''
                    sshScript remote: remote, script: "run.sh"
-               }
-           }
-       }
-    }
+        }
 }
