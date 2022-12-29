@@ -23,7 +23,7 @@ pipeline {
             sh 'chmod +x gradlew'
             sh './gradlew clean build'
 
-            sh 'ls -al ./build/libs/ls -al ./build/libs/*SNAPSHOT.jar'
+            sh 'ls -al ./build/libs/*SNAPSHOT.jar'
             }
 
             post {
