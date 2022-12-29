@@ -43,12 +43,11 @@ pipeline {
                 }
             }
 
-            stage("jar file move") {
+            stage('jar file to server'){
                 steps{
-                    echo '.jar file to server'
-                    sh 'scp -P 2222 -i ./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/*SNAPSHOT.jar'
-                    sh ''
-                }
+                    sshagent(credentials:['Dev_server']){
+                        sh "scp -P 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/"
+                    }
             }
     }
 }
