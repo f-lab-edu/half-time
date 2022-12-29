@@ -49,6 +49,7 @@ pipeline {
                         sh 'ls -al ./build/libs/*SNAPSHOT.jar'
                         sh "scp -P 2222 -i .ssh/id_rsa.pem ./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/*SNAPSHOT.jar"
                     }
+                }
             }
 
             stage('run server'){
