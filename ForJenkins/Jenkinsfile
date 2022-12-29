@@ -1,76 +1,77 @@
 pipeline {
   agent any
-  stages {
-        stage('Git Progress') {
-             steps {
-                    git branch: 'main',
-                        url: 'https://github.com/f-lab-edu/half-time.git'
+    stages {
+            stage('Git Progress') {
+                 steps {
+                        git branch: 'main',
+                            url: 'https://github.com/f-lab-edu/half-time.git'
+                        }
+
+                 post {
+                        success {
+                                    sh 'echo "Successfully Cloned Repository"'
+                                 }
+                        failure {
+                                    sh 'echo "Fail Cloned Repository"'
+                                 }
+                      }
+            }
+
+            stage('Build'){
+                steps {
+                // gradlew 있어야 함. git clone해서 프로젝트 가져옴
+                sh 'chmod +x gradlew'
+                sh './gradlew clean build'
+
+                sh 'ls -al ./build/libs/*SNAPSHOT.jar'
                 }
 
-             post {
+                post {
                     success {
-                                sh 'echo "Successfully Cloned Repository"'
-                             }
+                        echo 'gradle build success'
+                    }
+
                     failure {
-                                sh 'echo "Fail Cloned Repository"'
-                             }
-                  }
-        }
-
-        stage('Build'){
-            steps {
-            // gradlew 있어야 함. git clone해서 프로젝트 가져옴
-            sh 'chmod +x gradlew'
-            sh './gradlew clean build'
-
-            sh 'ls -al ./build/libs/*SNAPSHOT.jar'
-            }
-
-            post {
-                success {
-                    echo 'gradle build success'
-                }
-
-                failure {
-                    echo 'gradle build failed'
+                        echo 'gradle build failed'
+                    }
                 }
             }
-        }
 
-        stage('Test') {
-            steps {
-                echo '테스트 관련된 몇 가지 단계를 수행한다.'
+            stage('Test') {
+                steps {
+                    echo '테스트 관련된 몇 가지 단계를 수행한다.'
+                }
             }
-        }
 
-        stage("Deploy") {
-               def remote = [:]remote.name = "Dev_server"
-               remote.host = "106.10.38.91"
-               remote.allowAnyHosts = true
-               remote.port = "2222"
+            stage("Deploy") {
+                   def remote = [:]remote.name = "Dev_server"
+                   remote.host = "106.10.38.91"
+                   remote.allowAnyHosts = true
+                   remote.port = "2222"
 
-               withCredentials([sshUserPrivateKey(credentialsId: 'Dev_server', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
-               remote.user = userName
-               remote.identityFile = identity
+                   withCredentials([sshUserPrivateKey(credentialsId: 'Dev_server', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+                   remote.user = userName
+                   remote.identityFile = identity
 
-               sshPut remote: remote, from: './build/libs/*SNAPSHOT.jar', into: '/home/web-app/'
-        }
+                   sshPut remote: remote, from: './build/libs/*SNAPSHOT.jar', into: '/home/web-app/'
+            }
 
-        stage("Restart") {
-                   writeFile file: 'run.sh', text: '''
-                   echo "> spring boot pid 확인"
-                           CURRENT_PID=$(ps -ef | grep half-time)echo "$CURRENT_PID"
-                           if [ -z ${CURRENT_PID} ] ;then
-                           echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다."
-                           else
-                           echo "> sudo kill -9 $CURRENT_PID"
-                           sudo kill -9 $CURRENT_PID
-                           sleep 10
-                           fi
-                           echo "> half-time 배포"
-                           sudo java -jar /home/web-app/*.jar >> app.log &
-                   '''
-                   sshScript remote: remote, script: "run.sh"
+            stage("Restart") {
+                       writeFile file: 'run.sh', text: '''
+                       echo "> spring boot pid 확인"
+                               CURRENT_PID=$(ps -ef | grep half-time)echo "$CURRENT_PID"
+                               if [ -z ${CURRENT_PID} ] ;then
+                               echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다."
+                               else
+                               echo "> sudo kill -9 $CURRENT_PID"
+                               sudo kill -9 $CURRENT_PID
+                               sleep 10
+                               fi
+                               echo "> half-time 배포"
+                               sudo java -jar /home/web-app/*.jar >> app.log &
+                       '''
+                       sshScript remote: remote, script: "run.sh"
+            }
         }
     }
 }
