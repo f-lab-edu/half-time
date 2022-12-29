@@ -55,10 +55,12 @@ pipeline {
             stage('run server'){
                 steps{
                     sshagent(credentials:['Dev_server']){
+                        sh 'pwd'
                         sh './home/web-app/run.sh'
                     }
                 }
             }
-        }
+          }
+       }
     }
 }
