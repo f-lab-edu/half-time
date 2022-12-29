@@ -46,7 +46,7 @@ pipeline {
             stage('jar file to server'){
                 steps{
                     sshagent(credentials:['Dev_server']){
-                        sh "scp -P 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/"
+                        sh "scp -P 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i root@106.10.38.91:./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/*SNAPSHOT.jar"
                     }
             }
         }
