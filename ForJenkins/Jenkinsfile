@@ -43,14 +43,17 @@ pipeline {
             }
         }
 
-       node() {
+       def remote = [:]
+                      remote.name = "Dev_server"
+                      remote.host = "106.10.38.91"
+                      remote.allowAnyHosts = true
+                      remote.port = "2222"
+
+
+       node {
            withCredentials([sshUserPrivateKey(credentialsId: 'Dev_server', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
-               def remote = [:]
-               remote.name = "Dev_server"
-               remote.host = "106.10.38.91"
-               remote.allowAnyHosts = true
-               remote.user = userName
-               remote.identityFile = identity
+           remote.user = userName
+           remote.identityFile = identity
 
                stage("Deploy") {
                    sshPut remote: remote, from: './build/libs/*SNAPSHOT.jar', into: '/home/web-app/'
@@ -67,7 +70,7 @@ pipeline {
                            sleep 10
                            fi
                            echo "> half-time 배포"
-                           sudo java -jar /home/web-app/*.jar
+                           sudo java -jar /home/web-app/*.jar >> app.log &
                    '''
                    sshScript remote: remote, script: "run.sh"
                }
