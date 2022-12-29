@@ -49,5 +49,6 @@ pipeline {
                         sh "scp -P 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i ./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/"
                     }
             }
+        }
     }
 }
