@@ -56,7 +56,7 @@ pipeline {
                    sshPut remote: remote, from: './build/libs/*SNAPSHOT.jar', into: '/home/web-app/'
                }
                stage("Restart") {
-                   writeFile file: 'run.sh', text: '
+                   writeFile file: 'run.sh', text: '''
                    echo "> spring boot pid 확인"
                            CURRENT_PID=$(ps -ef | grep half-time)echo "$CURRENT_PID"
                            if [ -z ${CURRENT_PID} ] ;then
@@ -68,7 +68,7 @@ pipeline {
                            fi
                            echo "> half-time 배포"
                            sudo java -jar /home/web-app/*.jar
-                   '
+                   '''
                    sshScript remote: remote, script: "run.sh"
                }
            }
