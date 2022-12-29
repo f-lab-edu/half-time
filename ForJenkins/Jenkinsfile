@@ -49,6 +49,7 @@ pipeline {
 
         stage('Deploy'){
             steps {
+                echo 'jar 배포 테스트'
             }
         }
 
