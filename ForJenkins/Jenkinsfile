@@ -43,7 +43,7 @@ pipeline {
             }
         }
 
-       node {
+       node() {
            withCredentials([sshUserPrivateKey(credentialsId: 'Dev_server', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
                def remote = [:]
                remote.name = "Dev_server"
