@@ -43,22 +43,20 @@ pipeline {
             }
         }
 
-       def remote = [:]
-                      remote.name = "Dev_server"
-                      remote.host = "106.10.38.91"
-                      remote.allowAnyHosts = true
-                      remote.port = "2222"
+        stage("Deploy") {
+               def remote = [:]remote.name = "Dev_server"
+               remote.host = "106.10.38.91"
+               remote.allowAnyHosts = true
+               remote.port = "2222"
 
+               withCredentials([sshUserPrivateKey(credentialsId: 'Dev_server', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
+               remote.user = userName
+               remote.identityFile = identity
 
-       node {
-           withCredentials([sshUserPrivateKey(credentialsId: 'Dev_server', keyFileVariable: 'identity', passphraseVariable: 'passphrase', usernameVariable: 'userName')]) {
-           remote.user = userName
-           remote.identityFile = identity
+               sshPut remote: remote, from: './build/libs/*SNAPSHOT.jar', into: '/home/web-app/'
+        }
 
-               stage("Deploy") {
-                   sshPut remote: remote, from: './build/libs/*SNAPSHOT.jar', into: '/home/web-app/'
-               }
-               stage("Restart") {
+        stage("Restart") {
                    writeFile file: 'run.sh', text: '''
                    echo "> spring boot pid 확인"
                            CURRENT_PID=$(ps -ef | grep half-time)echo "$CURRENT_PID"
