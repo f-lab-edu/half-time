@@ -46,7 +46,8 @@ pipeline {
             stage('jar file to server'){
                 steps{
                     sshagent(credentials:['Dev_server']){
-                        sh "scp -P 2222 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i root@106.10.38.91:./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/*SNAPSHOT.jar"
+                        sh 'ls -al ./build/libs/*SNAPSHOT.jar'
+                        sh "scp -P 2222 -i /var/lib/jenkins/.ssh/id_rsa.pem ./build/libs/*SNAPSHOT.jar root@106.10.38.91:/home/web-app/*SNAPSHOT.jar"
                     }
             }
         }
