@@ -57,7 +57,7 @@ pipeline {
                     sshagent(credentials:['Dev_server']){
                         sh 'uname -a'
                         sh 'ssh root@106.10.38.91 -p 2222 cd /home/web-app/'
-                        sh '/bin/sh ./app.sh'
+                        sh 'pwd && /bin/sh ./app.sh'
                     }
                 }
             }
