@@ -45,8 +45,10 @@ pipeline {
 
             stage('jar file to server'){
                 steps{
-                        sh 'ls -al ./build/libs/*SNAPSHOT.jar'
-                        sh 'uname -a && scp -P 2222 -i .ssh/id_rsa.pem ./build/libs/half-time-0.0.1-SNAPSHOT.jar root@106.10.38.91:/home/web-app/'
+                    sh 'ls -al ./build/libs/*SNAPSHOT.jar'
+                    sshagent(credentials:['Jenkins_server']){
+                        sh 'scp -P 2222 -i ./build/libs/half-time-0.0.1-SNAPSHOT.jar root@106.10.38.91:/home/web-app/half-time-0.0.1-SNAPSHOT.jar'
+                        }
                     }
             }
 
@@ -55,7 +57,7 @@ pipeline {
                 steps{
                     sshagent(credentials:['Dev_server']){
                         sh 'uname -a'
-                        sh 'cd /home/web-app/ && ls -al && sudo /bin/bash ./run.sh'
+                        sh 'cd /home/web-app/ && ls -al && /bin/bash ./run.sh'
                     }
                 }
             }
