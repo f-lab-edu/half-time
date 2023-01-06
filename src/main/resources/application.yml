@@ -1,0 +1,17 @@
+  spring.h2.console.enabled=true
+
+# mybatis 설정
+mybatis:
+  # resources/mapper/ 에 있는 모든 xml 파일
+  mapper-locations: mapper/*.xml
+  # alias 설정
+  # Spring Framework처럼 이름을 사용하기 편하게 바꿔주는게 아니라 길이를 줄여주는 역할.
+  #  # IntelluJ는 자동완성을 지원하기 때문에 굳이 안써도 됨.
+  #  # type-aliases-package: com.icia.member.dto
+
+Spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver # com.mysql.jdbc.Driver << 옛날 버전
+    url: jdbc:h2:tcp://localhost/./half-time?characterEncoding=UTF-8&useTimezone=true&serverTimezone=Asia/Seoul
+    username: root
+    password: toor
