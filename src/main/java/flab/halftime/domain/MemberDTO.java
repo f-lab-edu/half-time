@@ -1,4 +1,4 @@
-package flab.halftime.dto;
+package flab.halftime.domain;
 
 public class MemberDTO {
     private Long id;
@@ -22,14 +22,6 @@ public class MemberDTO {
 
     public void setMemberEmail(String memberEmail) {
         this.memberEmail = memberEmail;
-    }
-
-    public int getCertificationNumber() {
-        return certificationNumber;
-    }
-
-    public void setCertificationNumber(int certificationNumber) {
-        this.certificationNumber = certificationNumber;
     }
 
     public String getMemberPassword() {
