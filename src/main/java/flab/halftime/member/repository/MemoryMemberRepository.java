@@ -1,6 +1,6 @@
-package flab.halftime.repository;
+package flab.halftime.member.repository;
 
-import flab.halftime.domain.MemberDTO;
+import flab.halftime.member.domain.MemberDTO;
 
 import java.util.*;
 
