@@ -1,19 +1,19 @@
-package flab.halftime.service;
+package flab.halftime.member.service;
 
-import flab.halftime.domain.MemberDTO;
-import flab.halftime.repository.MemberMapperRepository;
+import flab.halftime.member.domain.MemberDTO;
+import flab.halftime.member.repository.MemberMapperRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MemberSevice {
+public class MemberService {
 //    private final MemberMapperRepository memoryMemberRepository = new MemoryMemberRepository();
 
     private final MemberMapperRepository MemberMapperRepository;
 
-    public MemberSevice(MemberMapperRepository MemberMapperRepository) {
+    public MemberService(MemberMapperRepository MemberMapperRepository) {
         this.MemberMapperRepository = MemberMapperRepository;
     }
 

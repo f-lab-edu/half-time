@@ -1,4 +1,4 @@
-package flab.halftime.domain;
+package flab.halftime.member.domain;
 
 public class MemberDTO {
     private Long id;
