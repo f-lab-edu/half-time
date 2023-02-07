@@ -17,24 +17,28 @@ public class MemoryMemberRepository implements MemberMapperRepository{
     }
 
     @Override
-    public Optional<MemberDTO> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
-    }
-
-    @Override
     public Optional<MemberDTO> findByEmail(String email) {
-        return store.values().stream().filter(memberDTO -> memberDTO.getMemberEmail().equals(email)).findAny();
+        return store.values().stream()
+                .filter(memberDTO -> memberDTO.getMemberEmail().equals(email)).findAny();
     }
 
     @Override
-    public Optional<MemberDTO> findByName(String name) {
-        return store.values().stream().filter(memberDTO -> memberDTO.getMemberName().equals(name)).findAny();
+    public Optional<MemberDTO> findByUserProfile(MemberDTO dto) {
+        Optional<MemberDTO> userEmail = store.values().stream()
+                .filter(memberDTO -> memberDTO.getMemberEmail().equals(dto.getMemberEmail())).findAny();
+        if (userEmail.isEmpty()) {
+            return Optional.empty();
+        } else{
+            MemberDTO memberDTO = userEmail.get();
+            if (memberDTO.getMemberName().equals(dto.getMemberName())) {
+                return Optional.of(memberDTO);
+            }else {
+                return Optional.empty();
+            }
+        }
     }
 
-    @Override
-    public List<MemberDTO> findAll() {
-        return new ArrayList<>(store.values());
-    }
+
 
     public void clearStore() {
         store.clear();

@@ -11,10 +11,7 @@ import java.util.Optional;
 public interface MemberMapperRepository {
     MemberDTO save(MemberDTO memberDTO);
 
-    Optional<MemberDTO> findById(Long id);
     Optional<MemberDTO> findByEmail(String email);
 
-    Optional<MemberDTO> findByName(String name);
-
-    List<MemberDTO> findAll();
+    Optional<MemberDTO> findByUserProfile(MemberDTO dto);
 }
