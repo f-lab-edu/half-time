@@ -3,7 +3,7 @@ pipeline {
     stages {
             stage('Git Progress') {
                  steps {
-                        git branch: 'any',
+                        git branch: 'develop',
                             url: 'https://github.com/f-lab-edu/half-time.git'
                         }
 
