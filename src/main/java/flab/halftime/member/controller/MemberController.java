@@ -5,7 +5,6 @@ import flab.halftime.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -13,18 +12,29 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @PostMapping("/signUp")
+    public String signup(MemberCreateForm form) {
+        MemberDTO memberDTO = new MemberDTO();
+        memberDTO.setMemberEmail(form.getMemberEmail());
+        memberDTO.setMemberName(form.getMemberName());
+        memberService.join(memberDTO);
+
+        return "redirect:/";
+    }
+
     @GetMapping("member/signup")
-    public String signupForm() {
+    public String signUpForm() {
         return "signup";
     }
 
-    @GetMapping("member/login")
-    public String login(@ModelAttribute MemberDTO memberDTO) {
-        return "login";
+    @GetMapping("member/user")
+    public String findUserForm() {
+        return "user";
     }
 
     @Autowired
     public MemberController(MemberService memberService) {
+
         this.memberService = memberService;
     }
 }
