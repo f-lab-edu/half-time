@@ -1,7 +1,7 @@
 package flab.halftime;
 
-import flab.halftime.domain.MemberDTO;
-import flab.halftime.repository.MemoryMemberRepository;
+import flab.halftime.member.domain.MemberDTO;
+import flab.halftime.member.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

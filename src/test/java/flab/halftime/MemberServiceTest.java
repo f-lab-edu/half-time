@@ -1,8 +1,8 @@
 package flab.halftime;
 
-import flab.halftime.domain.MemberDTO;
-import flab.halftime.repository.MemoryMemberRepository;
-import flab.halftime.service.MemberSevice;
+import flab.halftime.member.domain.MemberDTO;
+import flab.halftime.member.repository.MemoryMemberRepository;
+import flab.halftime.member.service.MemberService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,13 +13,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class MemberServiceTest {
 
-    MemberSevice memberService;
+    MemberService memberService;
     MemoryMemberRepository memberRepository;
 
     @BeforeEach
     public void beforeEach() {
         memberRepository = new MemoryMemberRepository();
-        memberService = new MemberSevice(memberRepository);
+        memberService = new MemberService(memberRepository);
     }
 
     @AfterEach
