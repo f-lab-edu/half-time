@@ -3,7 +3,7 @@ pipeline {
     stages {
             stage('Git Progress') {
                  steps {
-                        git branch: 'main',
+                        git branch: 'develop',
                             url: 'https://github.com/f-lab-edu/half-time.git'
                         }
 
@@ -57,7 +57,7 @@ pipeline {
                 steps{
                     sshagent(credentials:['Dev_server']){
                         sh """
-                        ssh -p 2222 -o StrictHostKeyChecking=no ${MAIN_SERVER} 'uname -a && cd /home/web-app/ && ls -al && /bin/bash ./run.sh'
+                        ssh -p 2222 -o StrictHostKeyChecking=no ${MAIN_SERVER} 'uname -a && cd /home/web-app/ && ls -al && /bin/bash nohup ./run.sh &'
                         """
                     }
                 }

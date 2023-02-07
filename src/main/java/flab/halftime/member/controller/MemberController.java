@@ -18,9 +18,9 @@ public class MemberController {
         return "signup";
     }
 
-    @PostMapping("member/login")
+    @GetMapping("member/login")
     public String login(@ModelAttribute MemberDTO memberDTO) {
-        return "home";
+        return "login";
     }
 
     @Autowired
