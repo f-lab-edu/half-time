@@ -22,21 +22,21 @@ public class MemoryMemberRepository implements MemberMapperRepository{
                 .filter(memberDTO -> memberDTO.getMemberEmail().equals(email)).findAny();
     }
 
-//    @Override
-//    public Optional<MemberDTO> findByUserProfile(MemberDTO dto) {
-//        Optional<MemberDTO> userEmail = store.values().stream()
-//                .filter(memberDTO -> memberDTO.getMemberEmail().equals(dto.getMemberEmail())).findAny();
-//        if (userEmail.isEmpty()) {
-//            return Optional.empty();
-//        } else{
-//            MemberDTO memberDTO = userEmail.get();
-//            if (memberDTO.getMemberName().equals(dto.getMemberName())) {
-//                return Optional.of(memberDTO);
-//            }else {
-//                return Optional.empty();
-//            }
-//        }
-//    }
+    @Override
+    public Optional<MemberDTO> findByUserProfile(MemberDTO dto) {
+        Optional<MemberDTO> userEmail = store.values().stream()
+                .filter(memberDTO -> memberDTO.getMemberEmail().equals(dto.getMemberEmail())).findAny();
+        if (userEmail.isEmpty()) {
+            return Optional.empty();
+        } else{
+            MemberDTO memberDTO = userEmail.get();
+            if (memberDTO.getMemberName().equals(dto.getMemberName())) {
+                return Optional.of(memberDTO);
+            }else {
+                return Optional.empty();
+            }
+        }
+    }
 
 
 
