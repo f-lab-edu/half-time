@@ -8,6 +8,6 @@ mybatis:
 Spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # com.mysql.jdbc.Driver << 옛날 버전
-    url: jdbc:mysql://118.67.128.80:3306/halfTime
-    username: inmoG
-    password : sandworm7139()
+    url: jdbc:mysql://118.67.134.151:3306
+    username: admin
+    password : vpsehf46~@
