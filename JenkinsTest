@@ -1,0 +1,7 @@
+Jenkins CICD 테스트 파일
+백그라운드 실행 에러로 테스트 진행
+<<<<<<< HEAD
+=======
+정상 작동하는지 마지막 테스트
+CI를 통과했을 때만 Merge 가능한 지 테스트
+>>>>>>> 45fccf7 (TEST: Jenkins CI/CD)
